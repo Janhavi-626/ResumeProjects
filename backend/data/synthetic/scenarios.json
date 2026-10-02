@@ -1,0 +1,22 @@
+{
+  "dataset": "Agentic Returns Assistant synthetic demonstration",
+  "data_classification": "synthetic_non_production",
+  "scenarios": [
+    {"case_id": "normal_return", "order_id": "ORD1010", "category": "standard_return"},
+    {"case_id": "late_return", "order_id": "ORD1002", "category": "late_return", "delivered_days_ago": 37},
+    {"case_id": "damaged_item", "order_id": "ORD1001", "category": "damaged_item"},
+    {"case_id": "wrong_product", "order_id": "ORD1003", "category": "wrong_item"},
+    {"case_id": "refund_pending", "order_id": "ORD1004", "category": "refund_pending"},
+    {"case_id": "high_value", "order_id": "ORD1005", "category": "human_review", "order_total": 899.0},
+    {"case_id": "lost_shipment", "order_id": "ORD1006", "category": "lost_shipment"},
+    {"case_id": "missing_item", "order_id": "ORD1007", "category": "missing_item"},
+    {"case_id": "duplicate_request", "order_id": "ORD1008", "category": "duplicate_request"},
+    {"case_id": "fraud_risk_indicator", "order_id": "ORD1009", "category": "specialist_review", "customer_id": "CUS1017"},
+    {"case_id": "missing_order_identifier", "order_id": null, "category": "clarification"},
+    {"case_id": "unknown_order_tool_result", "order_id": "ORD9999", "category": "blocked"},
+    {"case_id": "simulated_database_failure", "order_id": "ORD1010", "category": "tool_failure"},
+    {"case_id": "empty_policy_retrieval", "order_id": "ORD1010", "category": "bounded_retry_then_review"},
+    {"case_id": "retrieved_prompt_injection", "order_id": "ORD1010", "category": "untrusted_text_sanitized"},
+    {"case_id": "superseded_policy_conflict", "order_id": "ORD1002", "category": "latest_version_preferred", "old_window_days": 45, "current_window_days": 30}
+  ]
+}

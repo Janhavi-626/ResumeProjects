@@ -1,0 +1,12 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.next/
+node_modules/
+backend/data/*.db
+backend/data/chroma/
+backend/data/uploads/
+coverage.xml
+.coverage
