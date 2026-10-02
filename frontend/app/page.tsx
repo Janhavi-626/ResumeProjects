@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpRight, Check, CircleAlert, Clock3, Database, FileSearch, GitBranch, LoaderCircle, MessageSquareText, PackageCheck, RotateCcw, ShieldCheck, Sparkles, Truck, X } from "lucide-react";
 import { decideApproval, runInvestigation } from "@/lib/api";
 import type { AgentResponse, ProposedAction } from "@/types/api";
@@ -58,6 +58,13 @@ export default function Home() {
   const [sessionId, setSessionId] = useState<string>();
   const [modifyMode, setModifyMode] = useState(false);
   const [modifiedType, setModifiedType] = useState("return_case");
+  const [apiConfigured, setApiConfigured] = useState(Boolean(process.env.NEXT_PUBLIC_API_URL));
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname)) {
+      setApiConfigured(true);
+    }
+  }, []);
 
   async function submit(text = query) {
     if (!text.trim() || busy) return;
@@ -95,6 +102,7 @@ export default function Home() {
     <section className="main-area">
       <header className="topbar"><div className="breadcrumb">Operations <span>/</span> Returns <span>/</span> <strong>Investigation desk</strong></div><div className="topbar-right"><span className="environment-tag"><span /> DEMO ENVIRONMENT</span><div className="date-label">{new Intl.DateTimeFormat("en", { weekday: "short", month: "short", day: "numeric" }).format(new Date())}</div></div></header>
       <div className="page-content">
+        {!apiConfigured && <div className="error-banner api-config-banner"><CircleAlert size={16} />Backend API is not configured. Add NEXT_PUBLIC_API_URL in Vercel to enable investigations.</div>}
         <div className="page-heading"><div><div className="eyebrow"><span className="eyebrow-line" /> CASEWORK / 01</div><h1>Return investigation</h1><p>Review the record, policy, and next best action before anything changes.</p></div><div className="case-status"><span className={`status-dot ${result?.status === "human_review_required" ? "status-amber" : ""}`} />{currentStatus}</div></div>
 
         <section className="workflow-panel" aria-label="Workflow progress"><div className="panel-topline"><div><span className="panel-kicker">AGENT WORKFLOW</span><strong>{result?.workflow_id || "No active workflow"}</strong></div><span className="workflow-progress-label">{result ? result.workflow_state.current_stage.replaceAll("_", " ") : "Awaiting request"}</span></div><WorkflowRail result={result} /></section>

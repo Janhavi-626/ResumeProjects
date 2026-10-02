@@ -1,9 +1,16 @@
 import type { AgentResponse, ProposedAction } from "@/types/api";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
+function getApiBase() {
+  const configured = process.env.NEXT_PUBLIC_API_URL?.trim();
+  if (configured) return configured.replace(/\/$/, "");
+  if (typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname)) {
+    return "http://localhost:8001";
+  }
+  throw new Error("The backend API is not configured for this deployment. Set NEXT_PUBLIC_API_URL to a public FastAPI URL.");
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE}/api${path}`, {
+  const response = await fetch(`${getApiBase()}/api${path}`, {
     ...init,
     headers: { "Content-Type": "application/json", ...init?.headers },
     cache: "no-store",

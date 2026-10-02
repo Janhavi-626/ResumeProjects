@@ -19,12 +19,13 @@ type Metrics = {
   evaluation_results: { metric: string; score: number }[];
 };
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
+const API = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
 
 export default function AdminPage() {
   const [metrics, setMetrics] = useState<Metrics>();
-  const [error, setError] = useState("");
+  const [error, setError] = useState(API ? "" : "Backend API is not configured. Set NEXT_PUBLIC_API_URL to enable live metrics.");
   useEffect(() => {
+    if (!API) return;
     fetch(`${API}/api/metrics`, { cache: "no-store" })
       .then((response) => response.json())
       .then(setMetrics)
